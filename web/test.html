@@ -6,13 +6,82 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script>
-	$(function() {
-		$("#includedContent").load("tree_layout.html");
-	});
-</script>
+
+<script type="text/javascript" src="d3/d3.min.js"></script>
+<!-- <script type="text/javascript" src="customjs/tree.js"></script> -->
 </head>
 <body>
-	<div id="includedContent"></div>
+	<div id="noOfHost"></div>
+
+	<script type="text/javascript">
+		
+	$(document).ready(
+			function() {
+				
+				//Load tree by default;
+				loadTree("http://localhost:8080/Walku_UI_D3/customjs/edcdata.json");
+				
+				$('.button-type').click(function() {
+					
+		            var button = $(this).attr("value");
+		            var url; 
+		           
+		            if(button=="EDC"){
+		            	 url = "http://localhost:8080/Walku_UI_D3/customjs/edcdata.json";
+		            	 loadTree(url);
+		            }else if(button=="NDC"){
+		            	 url = "http://localhost:8080/Walku_UI_D3/customjs/ndcdata.json"; 
+		            	 loadTree(url);
+		            }
+					
+		        });
+
+				// Function to load tree.
+				function loadTree(url){
+					var canvas = d3.select("#noOfHost").append("svg").attr("width", 600)
+					.attr("height", 450).append("g").attr("transform",
+							"translate(50, 50)");
+
+			// Create Tree Layout.
+			var tree = d3.layout.tree().size([ 400, 400 ]);
+
+			d3.json(url, function(data) {
+
+				var nodes = tree.nodes(data);
+				var links = tree.links(nodes);
+
+				var node = canvas.selectAll(".node").data(nodes).enter()
+						.append("g").attr("class", "node").attr(
+								"transform",
+								function(d) {
+									return "translate(" + d.y + ", " + d.x + ")";
+								}); // swap d.x and d.y for vertical.
+
+				node.append("circle").attr("r", 5).attr("fill", "steelblue");
+
+				node.append("text").attr("fill", "black").attr("y",
+						function(d, i) {
+							return i + 15;
+						}).text(function(d) {
+					return d.name;
+				})
+
+				var diagonal = d3.svg.diagonal().projection(function(d) {
+					return [ d.y, d.x ];
+				}); // swap d.x and d.y for vertical.
+
+				canvas.selectAll(".link").data(links).enter().append("path")
+						.attr("class", "link").attr("fill", "none").attr(
+								"stroke", "#ADADAD").attr("d", diagonal);
+			});
+				}
+
+			});
+	
+	</script>
+
+	<input class="button-type" type="button" id="edc" value="EDC">
+	<input class="button-type" type="button" id="ndc" value="NDC">
+
 </body>
 </html>

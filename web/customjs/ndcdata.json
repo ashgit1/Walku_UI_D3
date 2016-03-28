@@ -1,0 +1,30 @@
+{
+"name": "NDC",
+"children": [
+		{
+			"name": "Unix(1500)",
+			"children": [
+				{"name": "AIX(200)"},
+				{"name": "Debian(700)"},
+				{"name": "FreeBSD(600)"}
+			]
+		
+		},
+		{
+			"name": "Linux(1200)",
+			"children": [
+				{"name": "Ubuntu(400)"},
+				{"name": "Redhat(600)"},
+				{"name": "Fedora(200)"}
+			]
+		},
+		{
+			"name": "Windows(500)",
+			"children": [
+				{"name": "WinXP(100)"},
+				{"name": "Windows 7(250)"},
+				{"name": "Windows 10(150)"}
+			]
+		}
+	]
+}
